@@ -1,91 +1,79 @@
-'use strict';
+"use strict";
 
-const querySelector = function (selector) {
-  return document.querySelector(selector);
+const qs = (selector) => document.querySelector(selector);
+const qsa = (selector) => document.querySelectorAll(selector);
+
+const EL = {
+  SCORE: ["#score--0", "#score--1"],
+  CURRENT: ["#current--0", "#current--1"],
+  DICE_LOGO: ".dice",
+  BTN_NEW: ".btn--new",
+  BTN_ROLL: ".btn--roll",
+  BTN_HOLD: ".btn--hold",
+  PLAYERS: [".player--0", ".player--1"],
 };
 
-// Defining elements
-const scoreEl0 = querySelector('#score--0');
-const scoreEl1 = querySelector('#score--1');
-const currentEl0 = querySelector('#current--0');
-const currentEl1 = querySelector('#current--1');
-const diceLogo = querySelector('.dice');
-const btnNew = querySelector('.btn--new');
-const btnRoll = querySelector('.btn--roll');
-const btnHold = querySelector('.btn--hold');
-const playerEl1 = querySelector('.player--0');
-const playerEl2 = querySelector('.player--1');
+const DICE_SIDES = 6;
+
 let scores, currentScore, activePlayer, playing;
 
-// Starting conditions
-const init = function () {
+const init = () => {
   scores = [0, 0];
   currentScore = 0;
   activePlayer = 0;
   playing = true;
 
-  scoreEl0.textContent = 0;
-  scoreEl1.textContent = 0;
-  currentEl0.textContent = 0;
-  currentEl1.textContent = 0;
+  EL.SCORE.forEach((el, index) => (qs(el).textContent = 0));
+  EL.CURRENT.forEach((el, index) => (qs(el).textContent = 0));
 
-  diceLogo.classList.add('hidden');
-  playerEl1.classList.remove('player--winner');
-  playerEl2.classList.remove('player--winner');
-  playerEl1.classList.add('player--active');
-  playerEl2.classList.remove('player--active');
+  qs(EL.DICE_LOGO).classList.add("hidden");
+  EL.PLAYERS.forEach((el, index) => {
+    qs(el).classList.remove("player--winner", "player--active");
+    if (index === 0) qs(el).classList.add("player--active");
+  });
 };
 
 init();
 
-const switchPLayer = function () {
-  document.getElementById(`current--${activePlayer}`).textContent = 0;
+const switchPlayer = () => {
+  qs(`#current--${activePlayer}`).textContent = 0;
   activePlayer = activePlayer === 0 ? 1 : 0;
   currentScore = 0;
 
-  // change focus
-  playerEl1.classList.toggle('player--active');
-  playerEl2.classList.toggle('player--active');
+  EL.PLAYERS.forEach((el) => qs(el).classList.toggle("player--active"));
 };
 
-// Rolling the dice
-btnRoll.addEventListener('click', function () {
+const rollDice = () => {
   if (playing) {
-    const dice = Math.trunc(Math.random() * 6) + 1;
-    diceLogo.classList.remove('hidden');
-    diceLogo.src = `dice-${dice}.png`;
+    const dice = Math.trunc(Math.random() * DICE_SIDES) + 1;
+    qs(EL.DICE_LOGO).classList.remove("hidden");
+    qs(EL.DICE_LOGO).src = `dice-${dice}.png`;
 
     if (dice !== 1) {
       currentScore += dice;
-      // currentEl0.textContent = currentScore;
-      document.getElementById(`current--${activePlayer}`).textContent =
-        currentScore;
+      qs(`#current--${activePlayer}`).textContent = currentScore;
     } else {
-      switchPLayer();
+      switchPlayer();
     }
   }
-});
+};
 
-// Hold functionality
-btnHold.addEventListener('click', function () {
+const holdScore = () => {
   if (playing) {
     scores[activePlayer] += currentScore;
-    document.getElementById(`score--${activePlayer}`).textContent =
-      scores[activePlayer];
+    qs(`#score--${activePlayer}`).textContent = scores[activePlayer];
+
     if (scores[activePlayer] >= 100) {
       playing = false;
-      diceLogo.classList.add('hidden');
-      document
-        .querySelector(`.player--${activePlayer}`)
-        .classList.add('player--winner');
-      document
-        .querySelector(`.player--${activePlayer}`)
-        .classList.remove('player--active');
+      qs(EL.DICE_LOGO).classList.add("hidden");
+      qs(EL.PLAYERS[activePlayer]).classList.add("player--winner");
+      qs(EL.PLAYERS[activePlayer]).classList.remove("player--active");
     } else {
-      switchPLayer();
+      switchPlayer();
     }
   }
-});
+};
 
-// New game
-btnNew.addEventListener('click', init);
+qs(EL.BTN_ROLL).addEventListener("click", rollDice);
+qs(EL.BTN_HOLD).addEventListener("click", holdScore);
+qs(EL.BTN_NEW).addEventListener("click", init);
