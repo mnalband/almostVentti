@@ -47,7 +47,7 @@ const rollDice = () => {
   if (playing) {
     const dice = Math.trunc(Math.random() * DICE_SIDES) + 1;
     qs(EL.DICE_LOGO).classList.remove('hidden');
-    qs(EL.DICE_LOGO).src = `dice-img/dice-${dice}.png`;
+    qs(EL.DICE_LOGO).src = `../dice-img/dice-${dice}.png`;
 
     if (dice !== 1) {
       currentScore += dice;
