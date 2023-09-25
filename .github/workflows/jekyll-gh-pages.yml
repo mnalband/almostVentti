@@ -28,10 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Remove existing dice-img directory in _site
-        run: rm -rf _site/dice-img
-      - name: Copy dice images to workspace
-        run: cp -R dice-img _site/
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
