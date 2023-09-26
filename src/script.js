@@ -34,10 +34,6 @@ const init = () => {
   activePlayer = 0;
   playing = true;
 
-  console.log('AAAA');
-  console.log(document.documentElement.innerHTML);
-  console.log('BBB');
-
   EL.SCORE.forEach(el => (qs(el).textContent = 0));
   EL.CURRENT.forEach(el => (qs(el).textContent = 0));
 
