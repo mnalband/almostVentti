@@ -22,6 +22,15 @@ const simulateClick = selector => {
   mockElements[selector].dispatchEvent(clickEvent);
 };
 
+const elementsToCheck = [
+  '#name--0',
+  '#name--1',
+  '.dice',
+  '.btn--new',
+  '.btn--roll',
+  '.btn--hold',
+];
+
 describe('html unittests', function () {
   beforeEach(() => {
     document.documentElement.innerHTML = html.toString();
@@ -30,33 +39,11 @@ describe('html unittests', function () {
   afterEach(() => {
     jest.resetModules();
   });
-  it('should check if button with ID name--0 exists', () => {
-    const button = document.getElementById('name--0');
-    expect(button).toBeTruthy();
-  });
 
-  it('should check if button with ID name--1 exists', () => {
-    const button = document.getElementById('name--1');
-    expect(button).toBeTruthy();
-  });
-
-  it('should check if dice image exists', () => {
-    const diceImage = document.querySelector('.dice');
-    expect(diceImage).toBeTruthy();
-  });
-
-  it('should check if new game button exists', () => {
-    const newGameButton = document.querySelector('.btn--new');
-    expect(newGameButton).toBeTruthy();
-  });
-
-  it('should check if roll dice button exists', () => {
-    const rollDiceButton = document.querySelector('.btn--roll');
-    expect(rollDiceButton).toBeTruthy();
-  });
-
-  it('should check if hold button exists', () => {
-    const holdButton = document.querySelector('.btn--hold');
-    expect(holdButton).toBeTruthy();
+  elementsToCheck.forEach((element, index) => {
+    it(`should check if ${element} exists`, () => {
+      const button = document.querySelector(element);
+      expect(button).toBeTruthy();
+    });
   });
 });
