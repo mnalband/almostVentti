@@ -17,7 +17,7 @@ const EL = {
   BTN_NEW: '.btn--new',
   BTN_ROLL: '.btn--roll',
   BTN_HOLD: '.btn--hold',
-  PLAYERS: ['.player--0', '.player--1']
+  PLAYERS: ['.player--0', '.player--1'],
 };
 
 const DICE_SIDES = 6;
@@ -33,6 +33,10 @@ const init = () => {
   currentScore = 0;
   activePlayer = 0;
   playing = true;
+
+  console.log('AAAA');
+  console.log(document.documentElement.innerHTML);
+  console.log('BBB');
 
   EL.SCORE.forEach(el => (qs(el).textContent = 0));
   EL.CURRENT.forEach(el => (qs(el).textContent = 0));
@@ -101,3 +105,5 @@ const holdScore = () => {
 qs(EL.BTN_ROLL).addEventListener('click', rollDice);
 qs(EL.BTN_HOLD).addEventListener('click', holdScore);
 qs(EL.BTN_NEW).addEventListener('click', init);
+
+module.exports = { qs, rollDice, holdScore, init };
